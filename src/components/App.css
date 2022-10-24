@@ -1,0 +1,277 @@
+/* ================= General ================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Space+Mono:wght@700&display=swap');
+
+:root{
+    --logo-font: 'Space Mono', monospace;
+    --main-font: 'Roboto', sans-serif;
+    --light: 300;
+    --regular: 400;
+    --medium: 500;
+    --bold: 700;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a{
+    text-decoration: none;
+}
+
+img{
+    max-width: 100%;
+    height: auto;
+}
+
+body{
+    background-color: #fffff9;
+}
+
+/* ================= Header ================= */
+
+.header{
+    position: fixed;
+    width: 100%;
+    background-color: transparent;
+    top: 0;
+    left: 0;
+    padding: 30px 35px;
+    z-index: 100;
+}
+
+.header-nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.nav-logo{
+    font-family: var(--logo-font);
+    font-size: 45px;
+    line-height: 31px;
+    color: #000;
+}
+
+.header-nav ul{
+    display: flex;
+}
+
+.header-nav ul li{
+    font-family: var(--main-font);
+    font-weight: var(--medium);
+    font-size: 12px;
+    list-style: none;
+    margin-left: 35px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.header-nav ul li:hover{
+    opacity: 55%;
+}
+
+/* ================= Home ================= */
+
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
+  
+  @keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+  }
+
+.main-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.main-copies{
+    padding: 30px 35px;
+}
+
+.copies-title{
+    font-family: var(--main-font);
+    font-weight: var(--medium);
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.main-copies p{
+    font-family: var(--main-font);
+    font-weight: var(--light);
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.img-container{
+    height: 100vh;
+    max-width: 540px;
+    position: relative;
+    margin-right: 85px;
+}
+
+.images{
+    height: 100vh;
+    max-width: 500px;
+    overflow: hidden;
+}
+
+.images img{
+    height: 100vh;
+    object-fit: cover;
+    transition: .3s;
+}
+
+.images img:hover{
+    transform: scale(1.009);
+}
+
+.prev-btn, 
+.next-btn{
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    margin-top: -22px;
+    padding: 16px;
+    margin: -37px -50px;
+}
+
+.next-btn{
+    right: 0;
+}
+
+.main-img{
+    cursor: pointer;
+}
+
+.main-season{
+    font-family: var(--main-font);
+    font-weight: var(--medium);
+    font-size: 15px;
+    padding: 30px 35px;
+}
+
+.search-icon{
+    position: fixed;
+    top: 47%;
+    right: 35px;
+    width: 13px;
+    margin-bottom: 300px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.search-icon:hover{
+    opacity: 55%;
+}
+
+.main-year{
+    position: fixed;
+    top: 47%;
+    transform: rotate(-90deg);
+    left: 28px;
+    font-family: var(--main-font);
+    font-weight: var(--medium);
+    font-size: 13px;
+}
+
+/* ================= Categories ================= */
+
+.category-container{
+    display: grid;
+    grid-template-columns: repeat(3, 320px);   
+    justify-content: space-between;
+    column-gap: 70px;
+    row-gap: 110px;
+    margin-top: 170px;
+    margin-bottom: 110px;
+    padding: 0 90px;
+}
+
+.category-container p{
+    font-family: var(--main-font);
+    font-weight: var(--medium);
+    margin-bottom: 10px;
+}
+
+.category{
+    cursor: pointer;
+}
+
+.category-all{
+    grid-column: 1/3;
+}
+
+.more{
+    justify-self: center;
+    align-self: center;
+    cursor: pointer;
+}
+
+.footer{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.footer p{
+    font-family: var(--main-font);
+    font-weight: var(--regular);
+    font-size: 10px;
+}
+
+.category-img-container{
+    width: 320px;
+    overflow: hidden;
+}
+
+.category-img-container img{
+    transition: .3s;
+}
+
+.category-img-container img:hover{
+    transform: scale(1.02);
+}
+
+.category-all-container{
+    width: 1000px;
+}
+
+/* ================= Search ================= */
+
+.search{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, .9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 101;
+}
+
+.search input{
+    height: 100px;
+    width: 500px;
+    border: none;
+    outline: none;
+    font-size: 50px;
+    text-align: center;
+    font-family: var(--main-font);
+    background-color: transparent;
+}
+
+.search-x{
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    font-size: 38px;
+    cursor: pointer;
+}
