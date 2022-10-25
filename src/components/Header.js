@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from 'react-router-dom';
 
-function Header() {
+function Header({cart}) {
     const navStyle = {color: "black"}
     return (
         <header className="header">
@@ -10,7 +10,7 @@ function Header() {
                 <ul>
                     <li><NavLink style={navStyle} to='/'>HOME</NavLink></li>
                     <li><NavLink style={navStyle} to='/products'>PRODUCTS</NavLink></li>
-                    <li><NavLink style={navStyle} to='/cart'>BAG (0)</NavLink></li>
+                    <li><NavLink style={navStyle} to='/cart'>BAG ({cart})</NavLink></li>
                     <li>USER</li>
                 </ul>               
             </nav>

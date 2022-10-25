@@ -8,7 +8,7 @@ function Search({setIsSearch}) {
     return (
         <div className="search">
             <input type="text" placeholder="TYPE HERE"/>
-            <div className="search-x" onClick={handleClick}><i class='bx bx-x'></i></div>
+            <div className="search-x" onClick={handleClick}><i className='bx bx-x'></i></div>
         </div>
     )
 }
