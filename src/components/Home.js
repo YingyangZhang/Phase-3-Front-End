@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom'
 import search from "../images/search-icon.png";
 import all from "../images/all.png";
 import table from "../images/table.png";
@@ -7,6 +9,7 @@ import sofa from "../images/sofa.png";
 
 function Home({setIsSearch}) {
     const [currentIndex, setCurrentIndex] = useState(randomNumber(0, 2))
+    const navigate = useNavigate()
 
     function randomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -53,8 +56,8 @@ function Home({setIsSearch}) {
                         <div className="images">
                             <img src={`${images[currentIndex].url}`} alt="image" className="main-img"/>
                         </div>
-                        <span className="prev-btn" onClick={goToPrev}><i class='bx bx-left-arrow-alt' ></i></span>
-                        <span className="next-btn" onClick={goToNext}><i class='bx bx-right-arrow-alt' ></i></span>
+                        <span className="prev-btn" onClick={goToPrev}><i className='bx bx-left-arrow-alt' ></i></span>
+                        <span className="next-btn" onClick={goToNext}><i className='bx bx-right-arrow-alt' ></i></span>
                     </div>
                 </div>
                 <div className="main-season">
@@ -65,29 +68,29 @@ function Home({setIsSearch}) {
             <div className="category-container">
                 <div className="category">
                     <p>TABLE</p>
-                    <div className="category-img-container">
+                    <div className="category-img-container" onClick={() => {navigate(`/furnitures/table`)}}>
                         <img src={table} alt="image" />
                     </div>
                 </div>
                 <div className="category">
                     <p>CHAIR</p>
                     <div className="category-img-container">
-                        <img src={chair} alt="image" />
+                        <img src={chair} alt="image" onClick={() => {navigate(`/furnitures/chair`)}} />
                     </div>
                 </div>
                 <div className="category">
                     <p>SOFA</p>
                     <div className="category-img-container">
-                        <img src={sofa} alt="image" />
+                        <img src={sofa} alt="image" onClick={() => {navigate(`/furnitures/sofa`)}}/>
                     </div>
                 </div>
                 <div className="category-all">
                     <div className="category-all-container">
-                        <img src={all} alt="image" />
+                        <img src={all} alt="image"/>
                     </div>
                 </div>
                 <div className="more">
-                    <p>SHOP ALL</p>
+                    <p onClick={() => {navigate(`/furnitures/all`)}}>SHOP ALL</p>
                 </div>
             </div>
 

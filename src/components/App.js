@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import Furnitures from './Furnitures'
+
 import './App.css';
 
 import Header from "./Header";
@@ -8,15 +11,18 @@ import Search from "./Search";
 function App() {
     const [isSearch, setIsSearch] = useState(false);
 
-        fetch('http://localhost:9292/furnitures')
-        .then(r => r.json())
-        .then(data => console.log(data))
+
 
     return(
         <>
-            {isSearch ? <Search setIsSearch={setIsSearch}/> : ""}
             <Header />
-            <Home setIsSearch={setIsSearch}/>
+            {isSearch ? <Search setIsSearch={setIsSearch}/> : ""}
+            <Routes>
+                <Route exact path="/" element={<Home setIsSearch={setIsSearch}/>}>
+                </Route>
+                <Route exact path="/furnitures/:id" element={<Furnitures/>}>
+                </Route>
+            </Routes>
         </>
     )
 }
