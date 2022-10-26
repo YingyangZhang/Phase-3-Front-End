@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import search from "../images/search-icon.png";
 import all from "../images/all.png";
 import table from "../images/table.png";
 import chair from "../images/chair.png"
 import sofa from "../images/sofa.png";
+import { motion, useScroll } from "framer-motion";
 
-function Home({setIsSearch}) {
+function Home() {
     const [currentIndex, setCurrentIndex] = useState(randomNumber(0, 2))
 
     function randomNumber(min, max) {
@@ -13,8 +13,8 @@ function Home({setIsSearch}) {
       }
 
     const images = [
-        {url: "https://leibal.wpenginepowered.com/wp-content/uploads/2022/09/leibal_bb-chair_corpus-studio_2-scaled.webp"},
-        {url: "https://leibal.wpenginepowered.com/wp-content/uploads/2022/01/leibal_loop-table_nicholas-bijan-pourfard_9.jpeg"},
+        {url: "https://leibal.wpenginepowered.com/wp-content/uploads/2020/12/leibal_odd-table_lucas-faber_00005.jpg"},
+        {url: "https://leibal.wpenginepowered.com/wp-content/uploads/2021/04/leibal_shade-michelangelo_toshiki-omatsu_00007.jpg"},
         {url: "https://leibal.wpenginepowered.com/wp-content/uploads/2021/12/leibal_roll-top-sofa_sedilia_5.jpg"}
     ]
 
@@ -30,65 +30,63 @@ function Home({setIsSearch}) {
         setCurrentIndex(newIndex);
     }
 
-    function handleClick() {
-        setIsSearch(true)
-    }
-
     return (
         <main>
             <div className="main-container">
-                <p className="main-year">2022</p>
-                <img src={search} alt='search-icon' className="search-icon" onClick={handleClick}/>
                 <div className="main-copies">
-                    <div className="copies-title">BUILT FOR JOY AND LIVING.</div>
-                    <p>What makes home feel welcoming, luxurious and - most of all - livable, is so<br></br>
+                    <motion.div className="copies-title" initial={{ y: 15, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
+                        BUILT FOR JOY AND LIVING.
+                    </motion.div>
+                    <motion.p initial={{ y: 15, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>What makes home feel welcoming, luxurious and - most of all - livable, is so<br></br>
                         deelply personal to each of us. Our brand has collected works of some of the <br></br>
                         most creative designers around the world. This season's collection invites you<br></br>
                         to explore how material, shape and scale redefine home through your own<br></br>
                         design vision - creating interiors that inspire you every day.
-                    </p>
+                    </motion.p>
                 </div>
                 <div>
                     <div className="img-container">
-                        <div className="images">
+                        <motion.div className="images" initial={{ opacity: 0 }} whileInView={{ opacity: 1, transition:{duration: 1.1}}}>
                             <img src={`${images[currentIndex].url}`} alt="image" className="main-img"/>
-                        </div>
+                        </motion.div>
                         <span className="prev-btn" onClick={goToPrev}><i class='bx bx-left-arrow-alt' ></i></span>
                         <span className="next-btn" onClick={goToNext}><i class='bx bx-right-arrow-alt' ></i></span>
                     </div>
                 </div>
-                <div className="main-season">
+                <motion.div className="main-season" initial={{ y: 15, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
                     FALL COLLECTION
-                </div>
+                </motion.div>
             </div>
 
-            <div className="category-container">
-                <div className="category">
+            <div className="category-container" >
+                <motion.div className="category" initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
                     <p>TABLE</p>
                     <div className="category-img-container">
                         <img src={table} alt="image" />
                     </div>
-                </div>
-                <div className="category">
+                </motion.div>
+                <motion.div className="category" initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
                     <p>CHAIR</p>
                     <div className="category-img-container">
                         <img src={chair} alt="image" />
                     </div>
-                </div>
-                <div className="category">
+                </motion.div>
+                <motion.div className="category" initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
                     <p>SOFA</p>
                     <div className="category-img-container">
                         <img src={sofa} alt="image" />
                     </div>
-                </div>
-                <div className="category-all">
+                </motion.div>
+                <motion.div className="category-all" initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
                     <div className="category-all-container">
                         <img src={all} alt="image" />
                     </div>
-                </div>
-                <div className="more">
-                    <p>SHOP ALL</p>
-                </div>
+                </motion.div>
+                <motion.div className="more" initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
+                    <div>
+                        <p>SHOP ALL</p>
+                    </div>
+                </motion.div>
             </div>
 
             <footer className="footer">
