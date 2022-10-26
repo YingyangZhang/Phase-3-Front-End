@@ -28,7 +28,7 @@ function App() {
             console.log(data.data)
             setCartQuantity(data.data)
         })
-    },[])
+    },[setCartItem, setCartQuantity])
 
     const addCartItem = (itemToAdd) => {
         setCartItem([...cartItem, itemToAdd])
