@@ -4,13 +4,17 @@ import table from "../images/table.png";
 import chair from "../images/chair.png"
 import sofa from "../images/sofa.png";
 import { motion, useScroll } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-function Home() {
+function Home({setSelectedCat, selectedCat, furnitures,}) {
+    const navigate = useNavigate()
     const [currentIndex, setCurrentIndex] = useState(randomNumber(0, 2))
 
     function randomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
+
+      console.log(furnitures[20])
 
     const images = [
         {url: "https://leibal.wpenginepowered.com/wp-content/uploads/2020/12/leibal_odd-table_lucas-faber_00005.jpg"},
@@ -30,6 +34,20 @@ function Home() {
         setCurrentIndex(newIndex);
     }
 
+    function handleClick(value) {
+        setSelectedCat(value)
+        navigate(`/products`)
+    }
+    console.log(selectedCat)
+
+    function handleImage(url){
+        furnitures.find(furniture => {
+            Object.values(Object.values(furniture)[11]).find(image => {
+                return image === url
+            })
+        })
+    }
+
     return (
         <main>
             <div className="main-container">
@@ -47,7 +65,7 @@ function Home() {
                 <div>
                     <div className="img-container">
                         <motion.div className="images" initial={{ opacity: 0 }} whileInView={{ opacity: 1, transition:{duration: 1.1}}}>
-                            <img src={`${images[currentIndex].url}`} alt="image" className="main-img"/>
+                            <img src={`${images[currentIndex].url}`} onClick={() => handleImage(images[currentIndex].url)} alt="image" className="main-img"/>
                         </motion.div>
                         <span className="prev-btn" onClick={goToPrev}><i class='bx bx-left-arrow-alt' ></i></span>
                         <span className="next-btn" onClick={goToNext}><i class='bx bx-right-arrow-alt' ></i></span>
@@ -59,19 +77,19 @@ function Home() {
             </div>
 
             <div className="category-container" >
-                <motion.div className="category" initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
+                <motion.div className="category" onClick={() => handleClick("Table")} initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
                     <p>TABLE</p>
                     <div className="category-img-container">
                         <img src={table} alt="image" />
                     </div>
                 </motion.div>
-                <motion.div className="category" initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
+                <motion.div className="category" onClick={() => handleClick("Chair")} initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
                     <p>CHAIR</p>
                     <div className="category-img-container">
                         <img src={chair} alt="image" />
                     </div>
                 </motion.div>
-                <motion.div className="category" initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
+                <motion.div className="category" onClick={() => handleClick("Sofa")} initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
                     <p>SOFA</p>
                     <div className="category-img-container">
                         <img src={sofa} alt="image" />
@@ -82,7 +100,7 @@ function Home() {
                         <img src={all} alt="image" />
                     </div>
                 </motion.div>
-                <motion.div className="more" initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
+                <motion.div className="more" onClick={() => handleClick("All")}  initial={{ y: 25, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}>
                     <div>
                         <p>SHOP ALL</p>
                     </div>

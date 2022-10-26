@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import AllProducts from "./AllProducts";
 import SingleProduct from "./SingleProduct";
 
-function Products() {
+function Products({furnitures, selectedCat, setSelectedCat}) {
     const [isProduct, setIsProduct] = useState(false);
 
     return (
         <>
-            {isProduct ? <SingleProduct /> : <AllProducts setIsProduct={setIsProduct}/>}
+            <AllProducts furnitures={furnitures} selectedCat={selectedCat} setSelectedCat={setSelectedCat}/>
         </>
     )
 }

@@ -305,6 +305,12 @@ body{
     transition: 1s;
 }
 
+.cart-card{
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+}
+
 .bag-hide{
     visibility: hidden;
     opacity: 0%;
@@ -503,7 +509,7 @@ body{
     cursor: pointer;
 }
 
-.products-img-container{
+.product-img-container{
     height: 200px;
     overflow: hidden;
 }

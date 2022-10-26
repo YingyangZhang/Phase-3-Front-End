@@ -1,33 +1,57 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useParams, useLocation } from "react-router-dom";
+import axios from "axios";
 
-function SingleProduct() {
+function SingleProduct({inCartProducts}) {
+    const {id} = useParams()
+    const location = useLocation()
+    const state = location.state
+
+    function sendToCart() {
+        if(inCartProducts.some(obj => obj.furniture_id === state.furniture.id)){
+            axios.patch(`http://localhost:9292/cart/${state.furniture.id}`,{
+                quantity: 3
+            })
+        } else {
+            axios.post("http://localhost:9292/cart",{
+                name: state.furniture.name,
+                furniture_id: state.furniture.id,
+                quantity: 1
+            })
+            .then(r => console.log(r))
+        }
+
+    }
+
     return (
         <div className="single-product">
             <NavLink to="/products" exact><div className="go-back"><i class='bx bx-left-arrow-alt'></i></div></NavLink>
             <div className="product-imgs-container">
                 <motion.img 
                 className="copies-title" initial={{ y: 15, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}
-                src="https://leibal.wpenginepowered.com/wp-content/uploads/2020/12/leibal_odd-table_lucas-faber_sq.jpg" alt="image" />
+                src={state.furniture.image.angle1} alt="image" />
                 <motion.img 
-                className="copies-title" initial={{ y: 15, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }} src="https://leibal.wpenginepowered.com/wp-content/uploads/2020/12/leibal_odd-table_lucas-faber_00005.jpg" alt="image" />
+                className="copies-title" initial={{ y: 15, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }} 
+                src={state.furniture.image.angle2} alt="image" />
                 <motion.img 
-                className="copies-title" initial={{ y: 15, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }} src="https://leibal.wpenginepowered.com/wp-content/uploads/2020/12/leibal_odd-table_lucas-faber_00004.jpg" alt="image" />
+                className="copies-title" initial={{ y: 15, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }} 
+                src={state.furniture.image.angle3} alt="image" />
             </div>
 
             <div className="warpper">
                 <div className="sing-product-info">
                     <div className="sing-product-designer">
-                            Lucas Faber
+                            {state.furniture.designer}
                     </div>
                     
                     <div className="name-and-price">
                         <div className="single-product-name">
-                            ODD TABLE
+                            {state.furniture.name}
                         </div>
                         <div className="single-product-price">
-                            $800
+                            ${state.furniture.price}
                         </div>
                     </div>
 
@@ -44,26 +68,26 @@ function SingleProduct() {
                     
                     <div className="details-container">
                         <p>Material</p>
-                        <p>Solid Ash</p>
+                        <p>{state.furniture.material}</p>
                     </div>
 
                     <hr></hr>
 
                     <div className="details-container">
                         <p>Dimensions</p>
-                        <p>31.5"W X 31.5"D X 13.8"H</p>
+                        <p>{state.furniture.dimensions}</p>
                     </div>
 
                     <hr></hr>
 
                     <div className="details-container">
                         <p>Origin</p>
-                        <p>Berlin</p>
+                        <p>{state.furniture.origin}</p>
                     </div>
 
                     <hr></hr>
 
-                    <button className="add-to-cart-btn">ADD TO CART</button>
+                    <button className="add-to-cart-btn" onClick={sendToCart}>ADD TO CART</button>
 
                 </div>
             </div>
