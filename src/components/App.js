@@ -17,21 +17,31 @@ function App() {
     const [isBag, setIsBag] = useState(false);
     const [selectedCat, setSelectedCat] = useState("All")
     const [inCartProducts, setInCartProducts] = useState([])
-
+    const [cartCount, setCartCount] = useState(0)
+    
     useEffect(() => {
         axios.get('http://localhost:9292/furnitures')
         .then(r => {
             console.log(r.data)
             setFurnitures(r.data)
         })
+
+        axios.get("http://localhost:9292/cart")
+        .then(r => {
+            console.log(r.data)
+            setInCartProducts(r.data)
+        })
+
+        axios.get('http://localhost:9292/cart/quantity')
+        .then(r => setCartCount(r.data))
     },[])
 
     return(
         <>
             <ScrollRestoration />
             <Search isSearch={isSearch} setIsSearch={setIsSearch}/>
-            <Bag isBag={isBag} setIsSearch={setIsSearch} setIsBag={setIsBag} setInCartProducts={setInCartProducts} inCartProducts={inCartProducts}/>
-            <Header setIsSearch={setIsSearch} setIsBag={setIsBag}/>
+            <Bag isBag={isBag} setIsSearch={setIsSearch} setIsBag={setIsBag} setInCartProducts={setInCartProducts} inCartProducts={inCartProducts} cartCount={cartCount}/>
+            <Header setIsSearch={setIsSearch} setIsBag={setIsBag} bagCount={inCartProducts}/>
             <Routes>
                 <Route exact path="/" element={<Home furnitures={furnitures} setSelectedCat={setSelectedCat} selectedCat={selectedCat}/>} />
                 

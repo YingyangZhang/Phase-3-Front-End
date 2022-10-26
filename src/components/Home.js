@@ -14,7 +14,7 @@ function Home({setSelectedCat, selectedCat, furnitures,}) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
-      console.log(furnitures[20])
+    //   console.log(furnitures[20])
 
     const images = [
         {url: "https://leibal.wpenginepowered.com/wp-content/uploads/2020/12/leibal_odd-table_lucas-faber_00005.jpg"},
@@ -38,7 +38,6 @@ function Home({setSelectedCat, selectedCat, furnitures,}) {
         setSelectedCat(value)
         navigate(`/products`)
     }
-    console.log(selectedCat)
 
     function handleImage(url){
         furnitures.find(furniture => {

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import search from "../images/search-icon.png";
 
-function Header({setIsBag, setIsSearch}) {
+function Header({setIsBag, setIsSearch, bagCount}) {
     function handleBag() {
         setIsBag(true)
     }
@@ -21,7 +21,7 @@ function Header({setIsBag, setIsSearch}) {
                 <ul>
                     <li><NavLink to="/" exact style={{color: "#000"}}>HOME</NavLink></li>
                     <li><NavLink to="/products" exact style={{color: "#000"}}>PRODUCTS</NavLink></li>
-                    <li onClick={handleBag}>BAG (0)</li>
+                    <li onClick={handleBag}>BAG ({bagCount.length})</li>
                     <li>USER</li>
                 </ul>                 
                 <img src={search} alt='search-icon' className="search-icon" onClick={handleSearch}/>         

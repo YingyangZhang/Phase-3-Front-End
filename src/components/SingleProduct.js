@@ -10,11 +10,12 @@ function SingleProduct({inCartProducts}) {
     const state = location.state
 
     function sendToCart() {
-        if(inCartProducts.some(obj => obj.furniture_id === state.furniture.id)){
+        if(inCartProducts.some(product => product.furniture_id === state.furniture.id)){
             axios.patch(`http://localhost:9292/cart/${state.furniture.id}`,{
-                quantity: 3
+                quantity: 2
             })
-        } else {
+        } 
+        else {
             axios.post("http://localhost:9292/cart",{
                 name: state.furniture.name,
                 furniture_id: state.furniture.id,

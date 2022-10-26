@@ -17,7 +17,7 @@ function AllProducts({furnitures, selectedCat, setSelectedCat}) {
     // function handleClick() {
     //     setIsProduct(true);
     // }
-    console.log(selectedCat)
+    // console.log(selectedCat)
     return (
         <main className="products">
         <div className="products-filter">

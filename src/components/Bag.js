@@ -3,19 +3,12 @@ import loopTable from "../images/loopTable.jpeg";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 
-function Bag({isBag, setIsBag, setInCartProducts, inCartProducts}) {
+function Bag({isBag, setIsBag, setInCartProducts, inCartProducts, cartCount}) {
     const [test, setTest] = useState([])
     function handleHide() {
         setIsBag(false)
     }
 
-    useEffect(()=>{
-        axios.get("http://localhost:9292/cart/info")
-        .then(r => {
-            setInCartProducts(r.data)
-        })
-
-    },[])
 
     function deleteFromCart(id){
         axios.delete(`http://localhost:9292/cart/${id}`)
@@ -32,20 +25,20 @@ function Bag({isBag, setIsBag, setInCartProducts, inCartProducts}) {
                 <div className="cart-card">
                     {inCartProducts.map(product => {
                         return(
-                            <div className="items-container">
+                            <div className="items-container" key={product.id}>
                                 <div className="items-info-container" key={product.id}>
                                 <div className="item-img-container">
-                                <img src={product.image.angle1} alt="image"></img>
+                                <img src={product.furniture.image.angle1} alt="image"></img>
                             </div>
                         <div className="items-info">
                             <div className="item-title">{product.name}</div>
                             <div>
-                                <p style={{marginBottom: "5px"}}>Price: &nbsp; ${product.price}</p>
+                                <p style={{marginBottom: "5px"}}>Price: &nbsp; ${product.furniture.price}</p>
                                 <p>Quantity: &nbsp; <span className="minus">- &nbsp; </span> {product.quantity}<span className="plus"> &nbsp; +</span></p>
                             </div>
                         </div>
                     </div>
-                     <i class='bx bx-x' onClick={deleteFromCart(product.id)}></i> 
+                     <i class='bx bx-x'></i> 
                      </div>
                         )
                     })}
@@ -58,7 +51,7 @@ function Bag({isBag, setIsBag, setInCartProducts, inCartProducts}) {
                     <hr></hr>
                     <div className="items-count">
                         <p>Number of Items</p>
-                        <p>1</p>
+                        <p>{cartCount}</p>
                         </div>
                     <div className="subtotal">
                         <p>Order Subtotal</p>
