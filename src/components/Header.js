@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import search from "../images/search-icon.png";
 import { useNavigate } from "react-router-dom";
 
-function Header({setIsBag, setIsSearch, setFurnitures, isCancel, setIsCancel}) {
+function Header({setIsBag, setIsSearch, setFurnitures, isCancel, setIsCancel, bagCount}) {
 
     const navigate = useNavigate()
 
@@ -40,7 +40,7 @@ function Header({setIsBag, setIsSearch, setFurnitures, isCancel, setIsCancel}) {
                 <ul>
                     <li><NavLink to="/" exact style={{color: "#000"}}>HOME</NavLink></li>
                     <li><NavLink to="/products" exact style={{color: "#000"}}>PRODUCTS</NavLink></li>
-                    <li onClick={handleBag}>BAG (0)</li>
+                    <li onClick={handleBag}>BAG ({bagCount.length})</li>
                 </ul>                 
                 <img src={search} alt='search-icon' className="search-icon" onClick={handleSearch}/>         
                 <p className="main-year">2022</p> 

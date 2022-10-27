@@ -4,26 +4,27 @@ import { motion } from "framer-motion";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 
-function SingleProduct({inCartProducts}) {
-    const [isInBag, setIsInBag] = useState(false)
+function SingleProduct({inCartProducts, updateCart, addToCart}) {
     const {id} = useParams()
     const location = useLocation()
     const state = location.state
 
     function sendToCart() {
-        if(inCartProducts.some(obj => obj.furniture_id === state.furniture.id)){
+        const isInCart = inCartProducts.find(product => product.furniture_id === state.furniture.id)
+        if(isInCart){
             axios.patch(`http://localhost:9292/cart/${state.furniture.id}`,{
-                quantity: 3
+                quantity: isInCart.quantity + 1
             })
+        .then(r => {updateCart(r.data)})
         } else {
             axios.post("http://localhost:9292/cart",{
                 name: state.furniture.name,
                 furniture_id: state.furniture.id,
-                quantity: 1
+                quantity: 1,
+                total_cost: state.furniture.price
             })
-            .then(r => console.log(r))
+            .then(r => addToCart(r.data))
         }
-        setIsInBag(true)
     }
 
     return (
@@ -88,9 +89,9 @@ function SingleProduct({inCartProducts}) {
 
                     <hr></hr>
 
-                    {isInBag ? <button className="added-to-cart-btn" >ADDED TO BAG</button> :
+                    
                     <button className="add-to-cart-btn" onClick={sendToCart}>ADD TO BAG</button> 
-                    }
+                    
 
                 </div>
             </div>

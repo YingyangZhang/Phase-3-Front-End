@@ -18,49 +18,68 @@ function App() {
     const [selectedCat, setSelectedCat] = useState("All")
     const [inCartProducts, setInCartProducts] = useState([])
     const [isCancel, setIsCancel] = useState(false)
+    const [total, setTotal] = useState(0)
 
     useEffect(() => {
         axios.get('http://localhost:9292/furnitures')
         .then(r => {
             console.log(r.data);
-            const strAscending = [...r.data].sort((a, b) =>
-            a.name > b.name ? -1 : 1);
-            setFurnitures(strAscending)
-        })
-    },[])
-
-    useEffect(() => {
-        axios.get('http://localhost:9292/furnitures')
-        .then(r => {
-            console.log(r.data)
+            const strAscending = [...r.data].sort((a, b) => a.name > b.name ? -1 : 1);
             setFurnitures(r.data)
         })
 
         axios.get("http://localhost:9292/cart")
         .then(r => {
-            console.log(r.data)
             const strAscending = [...r.data].sort((a, b) =>
             a.name > b.name ? -1 : 1);
-            setFurnitures(strAscending)
+            setInCartProducts(strAscending)
         })
 
     },[])
+
+    const addToCart = (newProduct) => {
+        console.log(newProduct)
+        const updatedCart = [...inCartProducts, newProduct]
+        setInCartProducts(updatedCart)
+    }
+
+    const deleteFromCart = (deleteItem) => {
+        const updatedCart = inCartProducts.filter(product => {
+            return product.id !== deleteItem
+        })
+        setInCartProducts(updatedCart)
+    }
+
+    const updateCart = (item) => {
+        const updatedCart = inCartProducts.map(product => {
+            return product.id === item.id ? item : product
+        })
+        setInCartProducts(updatedCart)
+    }
+
+    const priceList = inCartProducts.map(product => {
+        return product.furniture.price * product.quantity
+    })
+
+    const totalPrice = priceList.reduce((accumulator, value) => {
+        return accumulator + value;
+      }, 0);
 
 
     return(
         <>
             <ScrollRestoration />
             <Search isSearch={isSearch} setIsSearch={setIsSearch} furnitures={furnitures} setFurnitures={setFurnitures} setIsCancel={setIsCancel}/>
-            <Bag isBag={isBag} setIsSearch={setIsSearch} setIsBag={setIsBag} setInCartProducts={setInCartProducts} inCartProducts={inCartProducts}/>
-            <Header setIsSearch={setIsSearch} setIsBag={setIsBag} setFurnitures={setFurnitures} isCancel={isCancel} setIsCancel={setIsCancel}/>
+            <Bag totalPrice={totalPrice} isBag={isBag} setIsSearch={setIsSearch} setIsBag={setIsBag} setInCartProducts={setInCartProducts} inCartProducts={inCartProducts} deleteFromCart={deleteFromCart} updateCart={updateCart} total={total}/>
+            <Header setIsSearch={setIsSearch} setIsBag={setIsBag} setFurnitures={setFurnitures} isCancel={isCancel} setIsCancel={setIsCancel} bagCount={inCartProducts}/>
             <Routes>
                 <Route exact path="/" element={<Home furnitures={furnitures} setSelectedCat={setSelectedCat} selectedCat={selectedCat}/>} />
                 
                 <Route exact path="/products" element={<Products furnitures={furnitures} selectedCat={selectedCat} setSelectedCat={setSelectedCat}/>} />
 
-                <Route exact path="/products/:id" element={<SingleProduct inCartProducts={inCartProducts}/>} />
+                <Route exact path="/products/:id" element={<SingleProduct inCartProducts={inCartProducts} updateCart={updateCart} addToCart={addToCart}/>} />
                 
-                <Route exact path="/checkout" element={<Checkout/>} />
+                <Route exact path="/checkout" element={<Checkout totalPrice={totalPrice} inCartProducts={inCartProducts}/>} />
             </Routes>
         </>
     )

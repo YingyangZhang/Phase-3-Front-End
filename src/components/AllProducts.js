@@ -2,19 +2,18 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-function AllProducts({furnitures, selectedCat, setSelectedCat, }) {
+function AllProducts({furnitures, selectedCat, setSelectedCat }) {
 
     function handleChange(e) {
         setSelectedCat(e.target.value)
     }
-    
+
     const filteredFurnitures = furnitures.filter(furniture => {
-        return (selectedCat === "All" ? furniture : furniture.category.category_name === selectedCat)
+        return selectedCat === "All" ? furniture : furniture.category?.category_name === selectedCat
     })
 
     const navigate = useNavigate();
 
-    console.log(selectedCat)
     return (
         <main className="products">
         <div className="products-filter">
@@ -43,7 +42,7 @@ function AllProducts({furnitures, selectedCat, setSelectedCat, }) {
                     initial={{ y: 5, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1} 
                     }}>
                 <div className="product-img-container">
-                    <img src={furniture.image.angle1} alt="iamge" />
+                    <img src={furniture.image.thumbnail} alt="iamge" />
                 </div>
 
                 <div className="designer">

@@ -1,7 +1,12 @@
 import React from "react";
 import loopTable from "../images/loopTable.jpeg";
+import Products from "./Products";
 
-function Checkout() {
+function Checkout({inCartProducts, totalPrice}) {
+    const tax = totalPrice * .2;
+    const total = tax + totalPrice + 50;
+    
+    console.log(inCartProducts)
     return (
         <main className="checkout">
             <div className="checkout-form">
@@ -101,21 +106,27 @@ function Checkout() {
             </div>
             <div className="cart-wrapper">
             <div className="in-cart-products">
-                <div className="cart-details-container">
-                    <div className="cart-details">
+
+                {inCartProducts.map(product => {
+                    return (
+                        <div className="cart-details-container">
+                     <div className="cart-details">
                         <div className="cart-img-container">
-                            <img src={loopTable} alt="image" />
+                            <img src={product.furniture.image.thumbnail} alt="image" />
                         </div>
-                        <p>LOOP TABLE</p>
+                        <p>{product.name}</p>
                     </div>
-                    <p>$1000</p>
+                    <p>${product.total_cost}</p>
                 </div>
+                    )
+                })}
+                
 
                 <hr></hr>
 
                 <div className="cart-info">
                     <p>Subtotal</p>
-                    <p>$1000</p>
+                    <p>${totalPrice}</p>
                 </div>
 
                 <div className="cart-info">
@@ -125,14 +136,14 @@ function Checkout() {
 
                 <div className="cart-info">
                     <p>Estimated Taxes</p>
-                    <p>$90</p>
+                    <p>${tax}</p>
                 </div>
 
                 <hr></hr>
 
                 <div className="cart-total">
                     <p>Total</p>
-                    <p className="cart-price">$1140</p>
+                    <p className="cart-price">${total}</p>
                 </div>
 
             </div>

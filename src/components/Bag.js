@@ -3,23 +3,31 @@ import loopTable from "../images/loopTable.jpeg";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 
-function Bag({isBag, setIsBag, setInCartProducts, inCartProducts}) {
-    const [test, setTest] = useState([])
+function Bag({totalPrice, isBag, setIsBag, setInCartProducts, inCartProducts, deleteFromCart, updateCart, total}) {
     function handleHide() {
         setIsBag(false)
     }
 
-    useEffect(()=>{
-        axios.get("http://localhost:9292/cart/info")
-        .then(r => {
-            setInCartProducts(r.data)
-        })
+    function updateQuantity(click, product){
+        if(product.quantity != 0 ){
+            axios.patch(`http://localhost:9292/cart/${product.furniture.id}`, {
+                quantity: click === "minus" ? product.quantity - 1 : product.quantity + 1
+            })
+            .then(r => updateCart(r.data))    
+        }
+        else if (product.quantity === 1){
+            // console.log(product.quantity)
+            handleDelete(product)   
+        }
+    }  
 
-    },[])
 
-    function deleteFromCart(id){
-        axios.delete(`http://localhost:9292/cart/${id}`)
+    const handleDelete = (product) => {
+            axios.delete(`http://localhost:9292/cart/${product.id}`)
+            deleteFromCart(product.id)
     }
+
+
 
     return (
         <div className={isBag ? "bag" : "bag bag-hide"}>
@@ -32,20 +40,20 @@ function Bag({isBag, setIsBag, setInCartProducts, inCartProducts}) {
                 <div className="cart-card">
                     {inCartProducts.map(product => {
                         return(
-                            <div className="items-container">
+                            <div className="items-container" key={product.id}>
                                 <div className="items-info-container" key={product.id}>
                                 <div className="item-img-container">
-                                <img src={product.image.angle1} alt="image"></img>
+                                <img src={product.furniture.image.thumbnail} alt="image"></img>
                             </div>
                         <div className="items-info">
                             <div className="item-title">{product.name}</div>
                             <div>
-                                <p style={{marginBottom: "5px"}}>Price: &nbsp; ${product.price}</p>
-                                <p>Quantity: &nbsp; <span className="minus">- &nbsp; </span> {product.quantity}<span className="plus"> &nbsp; +</span></p>
+                                <p style={{marginBottom: "5px"}}>Price: &nbsp; ${product.furniture.price}</p>
+                                <p>Quantity: &nbsp; <span className="minus" onClick={(e) => {updateQuantity(e.target.className, product)}}>- &nbsp; </span> {product.quantity}<span className="plus" onClick={(e) => {updateQuantity(e.target.className, product)}}> &nbsp; +</span></p>
                             </div>
                         </div>
                     </div>
-                     <i class='bx bx-x' onClick={deleteFromCart(product.id)}></i> 
+                     <i class='bx bx-x' onClick={() => {handleDelete(product)}}></i> 
                      </div>
                         )
                     })}
@@ -58,11 +66,11 @@ function Bag({isBag, setIsBag, setInCartProducts, inCartProducts}) {
                     <hr></hr>
                     <div className="items-count">
                         <p>Number of Items</p>
-                        <p>1</p>
+                        <p>{inCartProducts.length}</p>
                         </div>
                     <div className="subtotal">
                         <p>Order Subtotal</p>
-                        <p>$1,000</p>
+                        <p>${totalPrice}</p>
                     </div>
                     <NavLink to="/checkout" className="checkout-btn" onClick={handleHide}>
                         <button>CHECKOUT</button>
