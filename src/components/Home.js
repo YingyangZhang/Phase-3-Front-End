@@ -6,15 +6,13 @@ import sofa from "../images/sofa.png";
 import { motion, useScroll } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-function Home({setSelectedCat, selectedCat, furnitures,}) {
+function Home({setSelectedCat, selectedCat, furnitures}) {
     const navigate = useNavigate()
     const [currentIndex, setCurrentIndex] = useState(randomNumber(0, 2))
 
     function randomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
-
-      console.log(furnitures[20])
 
     const images = [
         {url: "https://leibal.wpenginepowered.com/wp-content/uploads/2020/12/leibal_odd-table_lucas-faber_00005.jpg"},
@@ -41,11 +39,11 @@ function Home({setSelectedCat, selectedCat, furnitures,}) {
     console.log(selectedCat)
 
     function handleImage(url){
-        furnitures.find(furniture => {
-            Object.values(Object.values(furniture)[11]).find(image => {
-                return image === url
-            })
+        const furniture = furnitures.find(furniture => {
+            return Object.values(furniture.image).includes(url)
         })
+        console.log(furniture)
+        navigate(`/products/${furniture.id}`, {state: {furniture}})
     }
 
     return (
