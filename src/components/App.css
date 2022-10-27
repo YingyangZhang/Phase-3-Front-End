@@ -39,7 +39,7 @@ body{
     top: 0;
     left: 0;
     padding: 30px 35px;
-    z-index: 100;
+    z-index: 101;
 }
 
 .header-nav{
@@ -70,6 +70,19 @@ body{
 }
 
 .header-nav ul li:hover{
+    opacity: 55%;
+}
+
+.cancel{
+    position: absolute;
+    left: 50%;
+    top: 127px;
+    font-size: 12px;
+    font-family: var(--main-font);
+    cursor: pointer;
+}
+
+.cancel:hover{
     opacity: 55%;
 }
 
@@ -271,7 +284,7 @@ body{
 
 .search input{
     height: 100px;
-    width: 500px;
+    width: 100vw;
     border: none;
     outline: none;
     font-size: 50px;
@@ -301,7 +314,7 @@ body{
     width: 100vw;
     height: 100vh;
     background-color: rgba(255, 255, 249, .5);
-    z-index: 101;
+    z-index: 102;
     transition: 1s;
 }
 
@@ -386,7 +399,7 @@ body{
 }
 
 .checkout-btn button:hover{
-    background-color: #fff;
+    background-color: #fffff9;
     color: #000;
 }
 
@@ -476,8 +489,9 @@ body{
     top: 0;
     left: 0;
     padding: 0 90px;
-    background-color: #fff;
+    background-color: #fffff9;
     height: 150px;
+    z-index: 100;
 }
 
 .products-nav{
@@ -518,6 +532,11 @@ body{
     width: 100%;
     object-fit: cover;
     object-position: center; 
+    transition: .3s;
+}
+
+.product-img-container:hover img{
+    transform: scale(1.02);
 }
 
 .name-price{
@@ -574,11 +593,12 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 90px;
+    margin-bottom: 75px;
 }
 
 .single-product-name{
     font-weight: var(--medium);
+    font-size: 23px;
 }
 
 .single-product-price{
@@ -596,8 +616,8 @@ body{
     font-family: var(--main-font);
     font-weight: var(--light);
     font-size: 13px;
-    line-height: 16px;
-    margin-bottom: 90px;
+    line-height: 17px;
+    margin-bottom: 75px;
 }
 
 .details-container{
@@ -610,6 +630,7 @@ body{
     font-weight: var(--light);
 }
 
+.added-to-cart-btn,
 .add-to-cart-btn{
     font-size: 14px;
     outline: none;
@@ -619,9 +640,14 @@ body{
     width: 100%;
     padding: 16px;
     cursor: pointer;
-    margin-top: 90px;
+    margin-top: 75px;
     border: 1px solid #000;
     transition: .3s;
+}
+
+.added-to-cart-btn{
+    background-color: #fffff9;
+    color: #000;
 }
 
 .add-to-cart-btn:hover{

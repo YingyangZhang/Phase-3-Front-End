@@ -17,6 +17,17 @@ function App() {
     const [isBag, setIsBag] = useState(false);
     const [selectedCat, setSelectedCat] = useState("All")
     const [inCartProducts, setInCartProducts] = useState([])
+    const [isCancel, setIsCancel] = useState(false)
+
+    useEffect(() => {
+        axios.get('http://localhost:9292/furnitures')
+        .then(r => {
+            console.log(r.data);
+            const strAscending = [...r.data].sort((a, b) =>
+            a.name > b.name ? -1 : 1);
+            setFurnitures(strAscending)
+        })
+    },[])
 
     useEffect(() => {
         axios.get('http://localhost:9292/furnitures')
@@ -24,14 +35,24 @@ function App() {
             console.log(r.data)
             setFurnitures(r.data)
         })
+
+        axios.get("http://localhost:9292/cart")
+        .then(r => {
+            console.log(r.data)
+            const strAscending = [...r.data].sort((a, b) =>
+            a.name > b.name ? -1 : 1);
+            setFurnitures(strAscending)
+        })
+
     },[])
+
 
     return(
         <>
             <ScrollRestoration />
-            <Search isSearch={isSearch} setIsSearch={setIsSearch}/>
+            <Search isSearch={isSearch} setIsSearch={setIsSearch} furnitures={furnitures} setFurnitures={setFurnitures} setIsCancel={setIsCancel}/>
             <Bag isBag={isBag} setIsSearch={setIsSearch} setIsBag={setIsBag} setInCartProducts={setInCartProducts} inCartProducts={inCartProducts}/>
-            <Header setIsSearch={setIsSearch} setIsBag={setIsBag}/>
+            <Header setIsSearch={setIsSearch} setIsBag={setIsBag} setFurnitures={setFurnitures} isCancel={isCancel} setIsCancel={setIsCancel}/>
             <Routes>
                 <Route exact path="/" element={<Home furnitures={furnitures} setSelectedCat={setSelectedCat} selectedCat={selectedCat}/>} />
                 

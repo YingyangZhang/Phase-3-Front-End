@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 
 function SingleProduct({inCartProducts}) {
+    const [isInBag, setIsInBag] = useState(false)
     const {id} = useParams()
     const location = useLocation()
     const state = location.state
@@ -22,7 +23,7 @@ function SingleProduct({inCartProducts}) {
             })
             .then(r => console.log(r))
         }
-
+        setIsInBag(true)
     }
 
     return (
@@ -87,7 +88,9 @@ function SingleProduct({inCartProducts}) {
 
                     <hr></hr>
 
-                    <button className="add-to-cart-btn" onClick={sendToCart}>ADD TO CART</button>
+                    {isInBag ? <button className="added-to-cart-btn" >ADDED TO BAG</button> :
+                    <button className="add-to-cart-btn" onClick={sendToCart}>ADD TO BAG</button> 
+                    }
 
                 </div>
             </div>
