@@ -17,7 +17,6 @@ function App() {
     const [isBag, setIsBag] = useState(false);
     const [selectedCat, setSelectedCat] = useState("All")
     const [inCartProducts, setInCartProducts] = useState([])
-    const [cartCount, setCartCount] = useState(0)
     
     useEffect(() => {
         axios.get('http://localhost:9292/furnitures')
@@ -32,22 +31,40 @@ function App() {
             setInCartProducts(r.data)
         })
 
-        axios.get('http://localhost:9292/cart/quantity')
-        .then(r => setCartCount(r.data))
     },[])
+
+    const addToCart = (newProduct) => {
+        console.log(newProduct)
+        const updatedCart = [...inCartProducts, newProduct]
+        setInCartProducts(updatedCart)
+    }
+
+    const deleteFromCart = (deleteItem) => {
+        const updatedCart = inCartProducts.filter(product => {
+            return product.id !== deleteItem
+        })
+        setInCartProducts(updatedCart)
+    }
+
+    const updateCart = (item) => {
+        const updatedCart = inCartProducts.map(product => {
+            return product.id === item.id ? item : product
+        })
+        setInCartProducts(updatedCart)
+    }
 
     return(
         <>
             <ScrollRestoration />
             <Search isSearch={isSearch} setIsSearch={setIsSearch}/>
-            <Bag isBag={isBag} setIsSearch={setIsSearch} setIsBag={setIsBag} setInCartProducts={setInCartProducts} inCartProducts={inCartProducts} cartCount={cartCount}/>
+            <Bag isBag={isBag} setIsSearch={setIsSearch} setIsBag={setIsBag} setInCartProducts={setInCartProducts} inCartProducts={inCartProducts} deleteFromCart={deleteFromCart} updateCart={updateCart}/>
             <Header setIsSearch={setIsSearch} setIsBag={setIsBag} bagCount={inCartProducts}/>
             <Routes>
                 <Route exact path="/" element={<Home furnitures={furnitures} setSelectedCat={setSelectedCat} selectedCat={selectedCat}/>} />
                 
                 <Route exact path="/products" element={<Products furnitures={furnitures} selectedCat={selectedCat} setSelectedCat={setSelectedCat}/>} />
 
-                <Route exact path="/products/:id" element={<SingleProduct inCartProducts={inCartProducts}/>} />
+                <Route exact path="/products/:id" element={<SingleProduct updateCart={updateCart} addToCart={addToCart} inCartProducts={inCartProducts}/>} />
                 
                 <Route exact path="/checkout" element={<Checkout/>} />
             </Routes>

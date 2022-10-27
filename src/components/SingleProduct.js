@@ -4,16 +4,18 @@ import { motion } from "framer-motion";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 
-function SingleProduct({inCartProducts}) {
+function SingleProduct({inCartProducts, updateCart, addToCart}) {
     const {id} = useParams()
     const location = useLocation()
     const state = location.state
 
     function sendToCart() {
-        if(inCartProducts.some(product => product.furniture_id === state.furniture.id)){
+        const isInCart = inCartProducts.find(product => product.furniture_id === state.furniture.id)
+        if(isInCart){
             axios.patch(`http://localhost:9292/cart/${state.furniture.id}`,{
-                quantity: 2
+                quantity: isInCart.quantity + 1
             })
+            .then(r => {updateCart(r.data)})
         } 
         else {
             axios.post("http://localhost:9292/cart",{
@@ -21,9 +23,8 @@ function SingleProduct({inCartProducts}) {
                 furniture_id: state.furniture.id,
                 quantity: 1
             })
-            .then(r => console.log(r))
+            .then(r => addToCart(r.data))
         }
-
     }
 
     return (
