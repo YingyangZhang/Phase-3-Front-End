@@ -65,7 +65,7 @@ function AllProducts({furnitures, selectedCat, setSelectedCat, setFurnitures, is
                         {furniture.name}
                     </span>
                     <span className="product-price">
-                        ${furniture.price}
+                        ${furniture.price.toLocaleString()}
                     </span>
                 </div>
             </motion.div>

@@ -53,7 +53,7 @@ function Bag({totalPrice, isBag, setIsBag, setInCartProducts, inCartProducts, de
                         <div className="items-info">
                             <div className="item-title">{product.name}</div>
                             <div>
-                                <p style={{marginBottom: "5px"}}>Price: &nbsp; ${product.furniture.price}</p>
+                                <p style={{marginBottom: "5px"}}>Price: &nbsp; ${product.furniture.price.toLocaleString()}</p>
                                 <p>Quantity: &nbsp; <span className="minus" onClick={(e) => {updateQuantity(e.target.className, product)}}>- &nbsp; </span> {product.quantity}<span className="plus" onClick={(e) => {updateQuantity(e.target.className, product)}}> &nbsp; +</span></p>
                             </div>
                         </div>
@@ -75,7 +75,7 @@ function Bag({totalPrice, isBag, setIsBag, setInCartProducts, inCartProducts, de
                         </div>
                     <div className="subtotal">
                         <p>Order Subtotal</p>
-                        <p>${totalPrice}</p>
+                        <p>${totalPrice.toLocaleString()}</p>
                     </div>
                     <NavLink to="/checkout" className="checkout-btn" onClick={handleHide}>
                         <button>CHECKOUT</button>

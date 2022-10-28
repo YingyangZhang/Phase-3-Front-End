@@ -1,6 +1,7 @@
 import React from "react";
 import loopTable from "../images/loopTable.jpeg";
 import Products from "./Products";
+import { NavLink } from "react-router-dom";
 
 function Checkout({inCartProducts, totalPrice}) {
     const tax = totalPrice * .2;
@@ -104,7 +105,7 @@ function Checkout({inCartProducts, totalPrice}) {
                 </form>
                 <hr></hr>
 
-                <button className="pay-btn">PAY NOW</button>
+                <NavLink to="/thank-you"><button className="pay-btn">PAY NOW</button></NavLink>
             </div>
             <div className="cart-wrapper">
             <div className="in-cart-products">
@@ -119,7 +120,7 @@ function Checkout({inCartProducts, totalPrice}) {
                         <p>{product.name}</p>
                         <p>x {product.quantity}</p>
                     </div>
-                    <p>${product.total_cost}</p>
+                    <p>${product.total_cost.toLocaleString()}</p>
                 </div>
                     )
                 })}
@@ -129,7 +130,7 @@ function Checkout({inCartProducts, totalPrice}) {
 
                 <div className="cart-info">
                     <p>Subtotal</p>
-                    <p>${totalPrice}</p>
+                    <p>${totalPrice.toLocaleString()}</p>
                 </div>
 
                 <div className="cart-info">
@@ -139,14 +140,14 @@ function Checkout({inCartProducts, totalPrice}) {
 
                 <div className="cart-info">
                     <p>Estimated Taxes</p>
-                    <p>${tax}</p>
+                    <p>${tax.toLocaleString()}</p>
                 </div>
 
                 <hr></hr>
 
                 <div className="cart-total">
                     <p>Total</p>
-                    <p className="cart-price">${total}</p>
+                    <p className="cart-price">${total.toLocaleString()}</p>
                 </div>
 
             </div>

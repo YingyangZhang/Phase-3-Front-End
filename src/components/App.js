@@ -10,6 +10,7 @@ import Checkout from "./Checkout";
 import ScrollRestoration from "./ScrollRestoration";
 import axios from "axios";
 import SingleProduct from "./SingleProduct";
+import ThankYou from "./ThankYou";
 
 function App() {
     const [furnitures, setFurnitures] = useState([])
@@ -67,10 +68,12 @@ function App() {
     return(
         <>
             <ScrollRestoration />
-            <Search isSearch={isSearch} setIsSearch={setIsSearch} furnitures={furnitures} setFurnitures={setFurnitures} setIsCancel={setIsCancel}/>
+            <Search isSearch={isSearch} setIsSearch={setIsSearch} furnitures={furnitures} setFurnitures={setFurnitures} />
             <Bag totalPrice={totalPrice} isBag={isBag} setIsSearch={setIsSearch} setIsBag={setIsBag} setInCartProducts={setInCartProducts} inCartProducts={inCartProducts} deleteFromCart={deleteFromCart} updateCart={updateCart} total={total}/>
             <Header setIsSearch={setIsSearch} setIsBag={setIsBag} setFurnitures={setFurnitures} isCancel={isCancel} setIsCancel={setIsCancel} bagCount={inCartProducts}/>
             <Routes>
+                <Route exact path="/thank-you" element={<ThankYou />}></Route>
+
                 <Route exact path="/" element={<Home furnitures={furnitures} setSelectedCat={setSelectedCat} selectedCat={selectedCat}/>} />
                 
                 <Route exact path="/products" element={<Products furnitures={furnitures} selectedCat={selectedCat} setSelectedCat={setSelectedCat} setFurnitures={setFurnitures} isCancel={isCancel} setIsCancel={setIsCancel}/>} />
