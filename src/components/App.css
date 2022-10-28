@@ -74,9 +74,9 @@ body{
 }
 
 .cancel{
-    position: absolute;
+    position: fixed;
     left: 50%;
-    top: 127px;
+    top: 120px;
     font-size: 12px;
     font-family: var(--main-font);
     cursor: pointer;
