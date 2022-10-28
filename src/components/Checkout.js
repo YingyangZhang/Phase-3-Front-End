@@ -4,9 +4,11 @@ import Products from "./Products";
 
 function Checkout({inCartProducts, totalPrice}) {
     const tax = totalPrice * .2;
-    const total = tax + totalPrice + 50;
-    
+    const shipping = inCartProducts.length === 0 ? 0 : 50;
+    const total = tax + totalPrice + shipping;
+
     console.log(inCartProducts)
+
     return (
         <main className="checkout">
             <div className="checkout-form">
@@ -115,6 +117,7 @@ function Checkout({inCartProducts, totalPrice}) {
                             <img src={product.furniture.image.thumbnail} alt="image" />
                         </div>
                         <p>{product.name}</p>
+                        <p>x {product.quantity}</p>
                     </div>
                     <p>${product.total_cost}</p>
                 </div>
@@ -131,7 +134,7 @@ function Checkout({inCartProducts, totalPrice}) {
 
                 <div className="cart-info">
                     <p>Shipping</p>
-                    <p>$50</p>
+                    <p>${shipping}</p>
                 </div>
 
                 <div className="cart-info">

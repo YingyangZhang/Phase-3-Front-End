@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 
-function SingleProduct({inCartProducts, updateCart, addToCart}) {
+function SingleProduct({inCartProducts, updateCart, addToCart, setIsBag}) {
     const {id} = useParams()
     const location = useLocation()
     const state = location.state
@@ -25,6 +25,7 @@ function SingleProduct({inCartProducts, updateCart, addToCart}) {
             })
             .then(r => addToCart(r.data))
         }
+        setIsBag(true)
     }
 
     return (

@@ -9,25 +9,30 @@ function Bag({totalPrice, isBag, setIsBag, setInCartProducts, inCartProducts, de
     }
 
     function updateQuantity(click, product){
-        if(product.quantity != 0 ){
+        if(product.quantity > 0 ){
             axios.patch(`http://localhost:9292/cart/${product.furniture.id}`, {
                 quantity: click === "minus" ? product.quantity - 1 : product.quantity + 1
             })
             .then(r => updateCart(r.data))    
         }
-        else if (product.quantity === 1){
+        else{
             // console.log(product.quantity)
             handleDelete(product)   
         }
     }  
-
 
     const handleDelete = (product) => {
             axios.delete(`http://localhost:9292/cart/${product.id}`)
             deleteFromCart(product.id)
     }
 
+    const quantitysArr = inCartProducts.map(product => {
+        return product.quantity
+    })
 
+    const quantities = quantitysArr.reduce((accumulator, value) => {
+        return accumulator + value
+      }, 0)
 
     return (
         <div className={isBag ? "bag" : "bag bag-hide"}>
@@ -66,7 +71,7 @@ function Bag({totalPrice, isBag, setIsBag, setInCartProducts, inCartProducts, de
                     <hr></hr>
                     <div className="items-count">
                         <p>Number of Items</p>
-                        <p>{inCartProducts.length}</p>
+                        <p>{quantities}</p>
                         </div>
                     <div className="subtotal">
                         <p>Order Subtotal</p>

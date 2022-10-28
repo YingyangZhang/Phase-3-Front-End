@@ -80,6 +80,7 @@ body{
     font-size: 12px;
     font-family: var(--main-font);
     cursor: pointer;
+    z-index: 103;
 }
 
 .cancel:hover{

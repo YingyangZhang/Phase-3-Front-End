@@ -20,17 +20,6 @@ function Header({setIsBag, setIsSearch, setFurnitures, isCancel, setIsCancel, ba
         navigate(`/`)
     }
 
-    function handleClick() {
-        fetch('http://localhost:9292/furnitures')
-        .then(r => r.json())
-        .then(data => {
-            const strAscending = [...data].sort((a, b) =>
-            a.name > b.name ? -1 : 1);
-            setFurnitures(strAscending)
-            setIsCancel(false)
-        })
-    }
-
     return (
         <header className="header">
             <nav className="header-nav">
@@ -44,7 +33,6 @@ function Header({setIsBag, setIsSearch, setFurnitures, isCancel, setIsCancel, ba
                 </ul>                 
                 <img src={search} alt='search-icon' className="search-icon" onClick={handleSearch}/>         
                 <p className="main-year">2022</p> 
-                {isCancel ? <p className="cancel" onClick={handleClick}>Cancel Search</p> : ""}       
             </nav>
         </header>
     )

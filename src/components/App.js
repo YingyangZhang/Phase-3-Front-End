@@ -25,14 +25,12 @@ function App() {
         .then(r => {
             console.log(r.data);
             const strAscending = [...r.data].sort((a, b) => a.name > b.name ? -1 : 1);
-            setFurnitures(r.data)
+            setFurnitures(strAscending)
         })
 
         axios.get("http://localhost:9292/cart")
         .then(r => {
-            const strAscending = [...r.data].sort((a, b) =>
-            a.name > b.name ? -1 : 1);
-            setInCartProducts(strAscending)
+            setInCartProducts(r.data)
         })
 
     },[])
@@ -75,9 +73,9 @@ function App() {
             <Routes>
                 <Route exact path="/" element={<Home furnitures={furnitures} setSelectedCat={setSelectedCat} selectedCat={selectedCat}/>} />
                 
-                <Route exact path="/products" element={<Products furnitures={furnitures} selectedCat={selectedCat} setSelectedCat={setSelectedCat}/>} />
+                <Route exact path="/products" element={<Products furnitures={furnitures} selectedCat={selectedCat} setSelectedCat={setSelectedCat} setFurnitures={setFurnitures} isCancel={isCancel} setIsCancel={setIsCancel}/>} />
 
-                <Route exact path="/products/:id" element={<SingleProduct inCartProducts={inCartProducts} updateCart={updateCart} addToCart={addToCart}/>} />
+                <Route exact path="/products/:id" element={<SingleProduct inCartProducts={inCartProducts} updateCart={updateCart} addToCart={addToCart} setIsBag={setIsBag}/>} />
                 
                 <Route exact path="/checkout" element={<Checkout totalPrice={totalPrice} inCartProducts={inCartProducts}/>} />
             </Routes>

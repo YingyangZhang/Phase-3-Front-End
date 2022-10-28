@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-function AllProducts({furnitures, selectedCat, setSelectedCat }) {
+function AllProducts({furnitures, selectedCat, setSelectedCat, setFurnitures, isCancel, setIsCancel}) {
 
     function handleChange(e) {
         setSelectedCat(e.target.value)
@@ -13,6 +13,17 @@ function AllProducts({furnitures, selectedCat, setSelectedCat }) {
     })
 
     const navigate = useNavigate();
+
+      function handleClick() {
+        fetch('http://localhost:9292/furnitures')
+        .then(r => r.json())
+        .then(data => {
+            const strAscending = [...data].sort((a, b) =>
+            a.name > b.name ? -1 : 1);
+            setFurnitures(strAscending)
+            setIsCancel(false)
+        })
+    }
 
     return (
         <main className="products">
@@ -63,9 +74,9 @@ function AllProducts({furnitures, selectedCat, setSelectedCat }) {
             
 
             </div>
-            
-        
 
+             {isCancel ? <p className="cancel" onClick={handleClick}>Cancel Search</p> : ""}      
+        
         <footer className="footer">
                 <p>Ⓒ 2022 HAUS LLC. ALL RIGHTS RESERVED</p>
         </footer>
