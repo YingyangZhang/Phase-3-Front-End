@@ -68,7 +68,7 @@ function App() {
     return(
         <>
             <ScrollRestoration />
-            <Search isSearch={isSearch} setIsSearch={setIsSearch} furnitures={furnitures} setFurnitures={setFurnitures} />
+            {isSearch ? <Search isSearch={isSearch} setIsCancel={setIsCancel} setIsSearch={setIsSearch} furnitures={furnitures} setFurnitures={setFurnitures} /> : null}
             <Bag totalPrice={totalPrice} isBag={isBag} setIsSearch={setIsSearch} setIsBag={setIsBag} setInCartProducts={setInCartProducts} inCartProducts={inCartProducts} deleteFromCart={deleteFromCart} updateCart={updateCart} total={total}/>
             <Header setIsSearch={setIsSearch} setIsBag={setIsBag} setFurnitures={setFurnitures} isCancel={isCancel} setIsCancel={setIsCancel} bagCount={inCartProducts}/>
             <Routes>

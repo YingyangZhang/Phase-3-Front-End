@@ -54,7 +54,7 @@ function SingleProduct({inCartProducts, updateCart, addToCart, setIsBag}) {
                             {state.furniture.name}
                         </div>
                         <div className="single-product-price">
-                            ${state.furniture.price}
+                            ${state.furniture.price.toLocaleString()}
                         </div>
                     </div>
 

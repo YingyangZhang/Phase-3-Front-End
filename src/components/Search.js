@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 function Search({isSearch, setIsSearch, setFurnitures, furnitures, setIsCancel}) {
     const [userInput, setUserInput] = useState("")
@@ -32,12 +33,19 @@ function Search({isSearch, setIsSearch, setFurnitures, furnitures, setIsCancel})
     console.log(userInput)
 
     return (
-        <div className={isSearch ? "search" : "search search-exit"}>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="TYPE HERE" autocomplete="off" autoFocus onChange={handleChange} value={userInput} id="txt"/>
-                <div className="search-x" onClick={handleClick}><i class='bx bx-x'></i></div>
-            </form>
-        </div>
+        <AnimatePresence>
+            <motion.div className="search"
+            key="search"
+            initial={{  opacity: 0}} 
+            animate={{ opacity: 1} }
+            exit={{ opacity: 0 }}
+            transition={{ duration: .2, ease: "easeOut" }} >
+                <form onSubmit={handleSubmit}>
+                    <input type="text" placeholder="TYPE HERE" autocomplete="off" autoFocus onChange={handleChange} value={userInput} id="txt"/>
+                    <div className="search-x" onClick={handleClick}><i class='bx bx-x'></i></div>
+                </form>
+            </motion.div>
+        </AnimatePresence>
     )
 }
 

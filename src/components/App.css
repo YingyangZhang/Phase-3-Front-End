@@ -292,6 +292,7 @@ body{
     text-align: center;
     font-family: var(--main-font);
     background-color: transparent;
+    caret-color: transparent;
 }
 
 .search-x{
