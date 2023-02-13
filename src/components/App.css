@@ -30,6 +30,12 @@ body{
     background-color: #fffff9;
 }
 
+.container{
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* ================= Header ================= */
 
 .header{
@@ -57,6 +63,7 @@ body{
 
 .header-nav ul{
     display: flex;
+    align-items: center;
 }
 
 .header-nav ul li{
@@ -67,6 +74,12 @@ body{
     margin-left: 35px;
     cursor: pointer;
     transition: .3s;
+}
+
+.header-nav ul i{
+    margin-left: 10px;
+    font-size: 14px;
+    cursor: pointer;
 }
 
 .header-nav ul li:hover{
@@ -85,6 +98,29 @@ body{
 
 .cancel:hover{
     opacity: 55%;
+}
+
+.search-icon{
+    position: fixed;
+    top: 47%;
+    right: 35px;
+    width: 13px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.search-icon:hover{
+    opacity: 55%;
+}
+
+.year{
+    position: fixed;
+    top: 47%;
+    transform: rotate(-90deg);
+    left: 28px;
+    font-family: var(--main-font);
+    font-weight: var(--medium);
+    font-size: 13px;
 }
 
 /* ================= Home ================= */
@@ -490,7 +526,8 @@ body{
     position: fixed;
     width: 100%;
     top: 0;
-    left: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
     padding: 0 90px;
     background-color: #fffff9;
     height: 150px;
@@ -515,6 +552,7 @@ body{
 }
 
 .products-container{
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     font-family: var(--main-font);
@@ -581,14 +619,12 @@ body{
 }
 
 .warpper{
-    width: 50%;
     padding-left: 50px;
 }
 
 .sing-product-info{
     position: fixed;
-    width: 50%;
-    padding-right: 140px;
+    max-width: 590px;
 }
 
 .name-and-price{
@@ -674,7 +710,7 @@ body{
 /* ================= Checkout ================= */
 
 .checkout{
-    padding: 140px 250px 100px;
+    padding: 140px 140px 80px;
     display: flex;
     column-gap: 60px;
 }
@@ -829,8 +865,7 @@ body{
 
 .in-cart-products{
     position: fixed;
-    width: 50%;
-    padding-right: 280px;
+    width: 580px;
 }
 
 /* ================= Thank You ================= */
@@ -870,4 +905,165 @@ body{
 
 .continue:hover{
     opacity: 55%;
+}
+
+/* ================= Login ================= */
+
+.login {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 249, .95);
+    z-index: 102;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form h1{
+    font-family: var(--main-font);
+    font-weight: var(--medium);
+    margin-bottom: 20px;
+    font-size: 40px;
+}
+
+.user-input p{
+    font-size: 16px;
+    font-family: var(--main-font);
+}
+
+.user-input input {
+    width: 300px;
+    height: 48px;
+    outline: none;
+    border: none;
+    border-bottom: .8px solid;
+    margin-bottom: 30px;
+    padding-top: 10px;
+    background-color: transparent;
+}
+
+.user-input input[type="password"],
+.user-input input[type="text"] {
+    font-family: var(--main-font);
+    font-size: 13px;
+    opacity: .7;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttons-container button {
+    outline: none;
+    border: none;
+    background-color: #000;
+    cursor: pointer;
+    color: #fffff9;
+    padding: 8px 15px;
+    border: .5px solid;
+    transition: .3s;
+}
+
+.buttons-container button:hover {
+    background-color: #fffff9;
+    color: #000;
+}
+
+.buttons-container p {
+    font-family: var(--main-font);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.sign-up {
+    display: flex;
+    column-gap: 50px;
+}
+
+.errors-container {
+    font-family: var(--main-font);
+    font-size: 12px;
+    color: #db9346;
+    margin-bottom: 27px;
+}
+
+.errors {
+    margin-bottom: 5px;
+}
+
+.login i {
+    position: absolute;
+    top: 45px;
+    right: 50px;
+    font-size: 38px;
+    cursor: pointer;
+}
+
+.login i:hover {
+    opacity:  55%;
+}
+
+/* ================= Profile ================= */
+
+.profile-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--main-font);
+}
+
+.user-info {
+    margin-bottom: 50px;
+}
+
+.user-info h1 {
+    font-weight: var(--medium);
+    font-size: 45px;
+}
+
+.user-info h1 span{
+    font-weight: var(--regular);
+    font-size: 27px;
+    margin-left: 20px;
+}
+
+.orders-detail {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: .5px solid;
+    padding-bottom: 10px;
+}
+
+.orders-detail h4 {
+    font-weight: var(--medium);
+}
+
+.orders-detail span {
+    font-size: 15px;
+    font-weight: var(--regular);
+}
+
+.orders-item {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.orders-container {
+    border: .5px solid;
+    margin-bottom: 30px;
+    padding: 15px 20px;
+}
+
+.no-message {
+    font-size: 14px;
+    opacity: .5;
 }

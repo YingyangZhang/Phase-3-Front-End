@@ -1,17 +1,50 @@
 import React from "react";
-import loopTable from "../images/loopTable.jpeg";
-import Products from "./Products";
 import { NavLink } from "react-router-dom";
 
-function Checkout({inCartProducts, totalPrice}) {
-    const tax = totalPrice * .2;
-    const shipping = inCartProducts.length === 0 ? 0 : 50;
-    const total = tax + totalPrice + shipping;
+function Checkout({cartItems, setCartItems, currentUser, setCurrentUser}) {
+    const priceArr = [];
+    const token = localStorage.getItem("jwt");
 
-    console.log(inCartProducts)
+    cartItems.forEach(item => {
+        priceArr.push(item.quantities * item.furniture.price)
+    })
+
+    const subTotal = priceArr.reduce((a, b) => a + b, 0)
+    const shipping = cartItems !== [] ? 0 : 50;
+    const tax = subTotal * .2;
+    const total = subTotal + shipping + tax;
+
+    function handleClick() {
+        fetch('https://haus-app.onrender.com/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                "total_price": total,
+                "user_id": currentUser.id,
+                "items": JSON.stringify(cartItems)
+            })
+        }).then(r => r.json())
+        .then(data => {
+            setCurrentUser(data.user)
+            console.log(currentUser)
+            
+            return fetch(`https://haus-app.onrender.com/users/clear_bag/${currentUser.id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+        }).then(r => r.json())
+        .then(data => {
+            setCartItems(data.user.cart_items)
+        })
+    }
 
     return (
-        <main className="checkout">
+        <main className="checkout container">
             <div className="checkout-form">
                 <p>SHIPPING ADDRESS</p>
                 <form>
@@ -88,11 +121,11 @@ function Checkout({inCartProducts, totalPrice}) {
                 <p>PAYMENT</p>
                 <form>
                     <div class="icon-container">
-                        <i class="fa fa-cc-visa"></i>
-                        <i class="fa fa-cc-discover"></i>
-                        <i class="fa fa-cc-mastercard"></i>
-                        <i class="fa fa-cc-amex"></i>
-                        <i class="fa fa-cc-paypal"></i>
+                        <i className="fa fa-cc-visa"></i>
+                        <i className="fa fa-cc-discover"></i>
+                        <i className="fa fa-cc-mastercard"></i>
+                        <i className="fa fa-cc-amex"></i>
+                        <i className="fa fa-cc-paypal"></i>
                     </div>
                     <div className="flex-column">
                         <input type="text" placeholder="Card Number"></input>
@@ -105,22 +138,22 @@ function Checkout({inCartProducts, totalPrice}) {
                 </form>
                 <hr></hr>
 
-                <NavLink to="/thank-you"><button className="pay-btn">PAY NOW</button></NavLink>
+                <NavLink to="/thank-you" exact="true"><button className="pay-btn" onClick={handleClick}>PAY NOW</button></NavLink>
             </div>
             <div className="cart-wrapper">
             <div className="in-cart-products">
 
-                {inCartProducts.map(product => {
+                {cartItems.map(item => {
                     return (
                         <div className="cart-details-container">
                      <div className="cart-details">
                         <div className="cart-img-container">
-                            <img src={product.furniture.image.thumbnail} alt="image" />
+                            <img src={item.furniture.image.thumbnail} alt="image" />
                         </div>
-                        <p>{product.name}</p>
-                        <p>x {product.quantity}</p>
+                        <p>{item.furniture.name}</p>
+                        <p>x {item.quantities}</p>
                     </div>
-                    <p>${product.total_cost.toLocaleString()}</p>
+                    <p>${item.furniture.price.toLocaleString()}</p>
                 </div>
                     )
                 })}
@@ -130,12 +163,12 @@ function Checkout({inCartProducts, totalPrice}) {
 
                 <div className="cart-info">
                     <p>Subtotal</p>
-                    <p>${totalPrice.toLocaleString()}</p>
+                    <p>${subTotal.toLocaleString()}</p>
                 </div>
 
                 <div className="cart-info">
                     <p>Shipping</p>
-                    <p>${shipping}</p>
+                    <p>${shipping.toLocaleString()}</p>
                 </div>
 
                 <div className="cart-info">

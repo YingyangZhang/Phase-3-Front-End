@@ -8,79 +8,70 @@ import Bag from "./Bag";
 import Products from "./Products";
 import Checkout from "./Checkout";
 import ScrollRestoration from "./ScrollRestoration";
-import axios from "axios";
 import SingleProduct from "./SingleProduct";
 import ThankYou from "./ThankYou";
+import Login from "./Login";
+import Profile from "./Profile";
 
 function App() {
+    const [currentUser, setCurrentUser] = useState(null);
+    const [cartItems, setCartItems] = useState([]);
+    const [isLogin, setIsLogin] = useState(null);
     const [furnitures, setFurnitures] = useState([])
     const [isSearch, setIsSearch] = useState(false);
     const [isBag, setIsBag] = useState(false);
     const [selectedCat, setSelectedCat] = useState("All")
-    const [inCartProducts, setInCartProducts] = useState([])
     const [isCancel, setIsCancel] = useState(false)
-    const [total, setTotal] = useState(0)
+    const token = localStorage.getItem("jwt")
 
     useEffect(() => {
-        axios.get('http://localhost:9292/furnitures')
-        .then(r => {
-            console.log(r.data);
-            const strAscending = [...r.data].sort((a, b) => a.name > b.name ? -1 : 1);
-            setFurnitures(strAscending)
+        if (token !== null) {
+        fetch("https://haus-app.onrender.com/me", {
+            method: "GET",
+            headers: {
+            Authorization: `Bearer ${token}`,
+            },
         })
+        .then(r => r.json())
+        .then(data => {
+            setCurrentUser(data.user)
+            setCartItems(data.user.cart_items)
+            console.log(data.user)
+        })
+        }
+    },[])
 
-        axios.get("http://localhost:9292/cart")
-        .then(r => {
-            setInCartProducts(r.data)
+    useEffect(() => {
+        fetch('https://haus-app.onrender.com/furnitures')
+        .then(r => r.json())
+        .then(data => {
+            console.log(data);
+            const strAscending = [...data].sort((a, b) =>
+            a.name > b.name ? -1 : 1);
+            setFurnitures(strAscending)
         })
 
     },[])
 
-    const addToCart = (newProduct) => {
-        console.log(newProduct)
-        const updatedCart = [...inCartProducts, newProduct]
-        setInCartProducts(updatedCart)
-    }
-
-    const deleteFromCart = (deleteItem) => {
-        const updatedCart = inCartProducts.filter(product => {
-            return product.id !== deleteItem
-        })
-        setInCartProducts(updatedCart)
-    }
-
-    const updateCart = (item) => {
-        const updatedCart = inCartProducts.map(product => {
-            return product.id === item.id ? item : product
-        })
-        setInCartProducts(updatedCart)
-    }
-
-    const priceList = inCartProducts.map(product => {
-        return product.furniture.price * product.quantity
-    })
-
-    const totalPrice = priceList.reduce((accumulator, value) => {
-        return accumulator + value;
-      }, 0);
-
-
     return(
         <>
             <ScrollRestoration />
+            {isLogin ? <Login setCurrentUser={setCurrentUser} setIsLogin={setIsLogin}/> : null}
             {isSearch ? <Search isSearch={isSearch} setIsCancel={setIsCancel} setIsSearch={setIsSearch} furnitures={furnitures} setFurnitures={setFurnitures} /> : null}
-            <Bag totalPrice={totalPrice} isBag={isBag} setIsSearch={setIsSearch} setIsBag={setIsBag} setInCartProducts={setInCartProducts} inCartProducts={inCartProducts} deleteFromCart={deleteFromCart} updateCart={updateCart} total={total}/>
-            <Header setIsSearch={setIsSearch} setIsBag={setIsBag} setFurnitures={setFurnitures} isCancel={isCancel} setIsCancel={setIsCancel} bagCount={inCartProducts}/>
+            {currentUser ? <Bag isBag={isBag} setIsBag={setIsBag} cartItems={cartItems} setCartItems={setCartItems}/> : null}
+            <Header currentUser={currentUser} setIsLogin={setIsLogin} setIsSearch={setIsSearch} setIsBag={setIsBag} cartItems={cartItems} setCurrentUser={setCurrentUser}/>
             <Routes>
                 <Route exact path="/thank-you" element={<ThankYou />}></Route>
 
-                <Route exact path="/" element={<Home furnitures={furnitures} setSelectedCat={setSelectedCat} selectedCat={selectedCat}/>} />
+                <Route exact path="/" element={<Home furnitures={furnitures} selectedCat={selectedCat} setSelectedCat={setSelectedCat} />} />
                 
-                <Route exact path="/products" element={<Products furnitures={furnitures} selectedCat={selectedCat} setSelectedCat={setSelectedCat} setFurnitures={setFurnitures} isCancel={isCancel} setIsCancel={setIsCancel}/>} />
+                <Route exact path="/products" element={<Products furnitures={furnitures} setFurnitures={setFurnitures} selectedCat={selectedCat} setSelectedCat={setSelectedCat} isCancel={isCancel} setIsCancel={setIsCancel} />} />
 
-                <Route exact path="/products/:id" element={<SingleProduct inCartProducts={inCartProducts} updateCart={updateCart} addToCart={addToCart} setIsBag={setIsBag}/>} />
+                <Route exact path="/products/:id" element={<SingleProduct currentUser={currentUser} setCurrentUser={setCurrentUser} cartItems={cartItems} setCartItems={setCartItems} setIsLogin={setIsLogin}/>} />
                 
-                <Route exact path="/checkout" element={<Checkout totalPrice={totalPrice} inCartProducts={inCartProducts}/>} />
+                {currentUser ? <Route exact path="/checkout" element={<Checkout cartItems={cartItems} setCartItems={setCartItems} currentUser={currentUser} setCurrentUser={setCurrentUser}/>} /> : null}
+
+                {currentUser ? <Route exact path="/profile" element={<Profile currentUser={currentUser}/>} /> : null}
             </Routes>
         </>
     )

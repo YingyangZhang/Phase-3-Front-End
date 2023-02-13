@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -6,16 +5,17 @@ function AllProducts({furnitures, selectedCat, setSelectedCat, setFurnitures, is
 
     function handleChange(e) {
         setSelectedCat(e.target.value)
+        console.log(e.target.value)
     }
 
     const filteredFurnitures = furnitures.filter(furniture => {
-        return selectedCat === "All" ? furniture : furniture.category?.category_name === selectedCat
+        return selectedCat === "All" ? furniture : furniture.category.category_name === selectedCat
     })
 
     const navigate = useNavigate();
 
-      function handleClick() {
-        fetch('http://localhost:9292/furnitures')
+    function handleClick() {
+        fetch('https://haus-app.onrender.com/furnitures')
         .then(r => r.json())
         .then(data => {
             const strAscending = [...data].sort((a, b) =>
@@ -26,8 +26,8 @@ function AllProducts({furnitures, selectedCat, setSelectedCat, setFurnitures, is
     }
 
     return (
-        <main className="products">
-        <div className="products-filter">
+        <main className="products container">
+        <div className="products-filter container">
             <div className="products-nav">
                 <div>
                     <label className="selection" for="categories">CATEGORY: &nbsp; </label>
@@ -45,9 +45,10 @@ function AllProducts({furnitures, selectedCat, setSelectedCat, setFurnitures, is
         
             <div className="products-container">
 
-            {filteredFurnitures.map(furniture => {
-                return (
-                    <motion.div key={furniture.id} 
+         
+         {filteredFurnitures.map(furniture => {
+            return (
+                <motion.div key={furniture.id} 
                     onClick={() => {navigate(`/products/${furniture.id}`, {state: {furniture}})}} 
                     className="product" 
                     initial={{ y: 5, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1} 
@@ -69,8 +70,10 @@ function AllProducts({furnitures, selectedCat, setSelectedCat, setFurnitures, is
                     </span>
                 </div>
             </motion.div>
-                )
-            })}
+            )
+         })}
+                    
+             
             
 
             </div>

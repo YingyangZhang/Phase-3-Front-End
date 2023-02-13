@@ -1,67 +1,97 @@
 import React, { useEffect, useState } from "react";
-import loopTable from "../images/loopTable.jpeg";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
 
-function Bag({totalPrice, isBag, setIsBag, setInCartProducts, inCartProducts, deleteFromCart, updateCart, total}) {
+function Bag({isBag, setIsBag, cartItems, setCartItems}) {
+    const token = localStorage.getItem("jwt")
+    const total = [];
+
+    cartItems.forEach(item => {
+            total.push(item.quantities * item.furniture.price)
+        })
+
+    const sum = total.reduce((a, b) => a + b, 0)
+
     function handleHide() {
         setIsBag(false)
     }
 
-    function updateQuantity(click, product){
-        if(product.quantity > 0 ){
-            axios.patch(`http://localhost:9292/cart/${product.furniture.id}`, {
-                quantity: click === "minus" ? product.quantity - 1 : product.quantity + 1
-            })
-            .then(r => updateCart(r.data))    
-        }
-        else{
-            // console.log(product.quantity)
-            handleDelete(product)   
-        }
-    }  
-
-    const handleDelete = (product) => {
-            axios.delete(`http://localhost:9292/cart/${product.id}`)
-            deleteFromCart(product.id)
+    function handleDelete(id) {
+        fetch(`https://haus-app.onrender.com/cart_items/${id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }).then(r => r.json())
+        .then(data => {
+            setCartItems(data.user.cart_items)
+        })
     }
 
-    const quantitysArr = inCartProducts.map(product => {
-        return product.quantity
-    })
+    function handlePlus(id, quantities) {
+        if (quantities <= 9) {
+            fetch(`https://haus-app.onrender.com/cart_items/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    "quantities": quantities + 1
+                })
+            }).then(r => r.json())
+            .then(data => {
+                setCartItems(data.user.cart_items)
+            })
+        }
+    }
 
-    const quantities = quantitysArr.reduce((accumulator, value) => {
-        return accumulator + value
-      }, 0)
+    function handleMinus(id, quantities) {
+        if( quantities > 1) {
+            fetch(`https://haus-app.onrender.com/cart_items/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    "quantities": quantities - 1
+                })
+            }).then(r => r.json())
+            .then(data => {
+                setCartItems(data.user.cart_items)
+            })
+        }
+    }
 
     return (
         <div className={isBag ? "bag" : "bag bag-hide"}>
             <div className={isBag ? "bag-container" : "bag-container bag-container-hide"}>
                 <div className="top">
                     <div className="bag-title">BAG</div>
-                    <div className="bag-exit" onClick={handleHide}><i class='bx bx-x'></i></div>
+                    <div className="bag-exit" onClick={handleHide}><i className='bx bx-x'></i></div>
                 </div>
      
                 <div className="cart-card">
-                    {inCartProducts.map(product => {
+                    { cartItems.map(item => {
                         return(
-                            <div className="items-container" key={product.id}>
-                                <div className="items-info-container" key={product.id}>
+                            <div className="items-container" key={item.id}>
+                                <div className="items-info-container" key={item.id}>
                                 <div className="item-img-container">
-                                <img src={product.furniture.image.thumbnail} alt="image"></img>
+                                <img src={item.furniture.image.thumbnail} alt="image"></img>
                             </div>
-                        <div className="items-info">
-                            <div className="item-title">{product.name}</div>
-                            <div>
-                                <p style={{marginBottom: "5px"}}>Price: &nbsp; ${product.furniture.price.toLocaleString()}</p>
-                                <p>Quantity: &nbsp; <span className="minus" onClick={(e) => {updateQuantity(e.target.className, product)}}>- &nbsp; </span> {product.quantity}<span className="plus" onClick={(e) => {updateQuantity(e.target.className, product)}}> &nbsp; +</span></p>
+                            <div className="items-info">
+                                <div className="item-title">{item.furniture.name}</div>
+                                <div>
+                                    <p style={{marginBottom: "5px"}}>Price: &nbsp; ${item.furniture.price.toLocaleString()}</p>
+                                    <p>Quantity: &nbsp; <span className="minus" onClick={() => handleMinus(item.id, item.quantities)}>- &nbsp; </span> {item.quantities}<span className="plus" onClick={() => handlePlus(item.id, item.quantities)}> &nbsp; +</span></p>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                     <i class='bx bx-x' onClick={() => {handleDelete(product)}}></i> 
-                     </div>
-                        )
-                    })}
+                            </div>
+                                <i className='bx bx-x' onClick={() => handleDelete(item.id)}></i> 
+                            </div>
+                            )
+                    })
+                    }
                 </div>
                   
                 <div className="summary">
@@ -71,11 +101,11 @@ function Bag({totalPrice, isBag, setIsBag, setInCartProducts, inCartProducts, de
                     <hr></hr>
                     <div className="items-count">
                         <p>Number of Items</p>
-                        <p>{quantities}</p>
+                        <p></p>
                         </div>
                     <div className="subtotal">
                         <p>Order Subtotal</p>
-                        <p>${totalPrice.toLocaleString()}</p>
+                        <p>${sum.toLocaleString()}</p>
                     </div>
                     <NavLink to="/checkout" className="checkout-btn" onClick={handleHide}>
                         <button>CHECKOUT</button>

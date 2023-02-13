@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
-function Search({isSearch, setIsSearch, setFurnitures, furnitures, setIsCancel}) {
+function Search({setIsSearch, setFurnitures, furnitures, setIsCancel}) {
     const [userInput, setUserInput] = useState("")
     const navigate = useNavigate()
 
@@ -30,8 +30,6 @@ function Search({isSearch, setIsSearch, setFurnitures, furnitures, setIsCancel})
         setUserInput(e.target.value)
     }
 
-    console.log(userInput)
-
     return (
         <AnimatePresence>
             <motion.div className="search"
@@ -42,7 +40,7 @@ function Search({isSearch, setIsSearch, setFurnitures, furnitures, setIsCancel})
             transition={{ duration: .2, ease: "easeOut" }} >
                 <form onSubmit={handleSubmit}>
                     <input type="text" placeholder="TYPE HERE" autocomplete="off" autoFocus onChange={handleChange} value={userInput} id="txt"/>
-                    <div className="search-x" onClick={handleClick}><i class='bx bx-x'></i></div>
+                    <div className="search-x" onClick={handleClick}><i className='bx bx-x'></i></div>
                 </form>
             </motion.div>
         </AnimatePresence>

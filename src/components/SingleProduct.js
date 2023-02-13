@@ -1,36 +1,54 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useParams, useLocation } from "react-router-dom";
-import axios from "axios";
+import { useLocation } from "react-router-dom";
 
-function SingleProduct({inCartProducts, updateCart, addToCart, setIsBag}) {
-    const {id} = useParams()
+function SingleProduct({setCurrentUser, currentUser, cartItems, setCartItems, setIsLogin}) {
     const location = useLocation()
     const state = location.state
+    const token = localStorage.getItem("jwt");
 
-    function sendToCart() {
-        const isInCart = inCartProducts.find(product => product.furniture_id === state.furniture.id)
-        if(isInCart){
-            axios.patch(`http://localhost:9292/cart/${state.furniture.id}`,{
-                quantity: isInCart.quantity + 1
-            })
-        .then(r => {updateCart(r.data)})
+    function handleAddToBag() {
+        const target = cartItems.find(item => item.furniture.name === state.furniture.name);
+        if (target) {
+            if (target.quantities <= 9) {
+                fetch(`https://haus-app.onrender.com/cart_items/${target.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        "quantities": target.quantities + 1
+                    })
+                }).then(r => r.json())
+                .then(data => {
+                    setCartItems(data.user.cart_items)
+                })
+            }
         } else {
-            axios.post("http://localhost:9292/cart",{
-                name: state.furniture.name,
-                furniture_id: state.furniture.id,
-                quantity: 1,
-                total_cost: state.furniture.price
+            fetch('https://haus-app.onrender.com/cart_items/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    "quantities": 1,
+                    "user_id": currentUser.id,
+                    "furniture_id": state.furniture.id
+                })
+            }).then(r => r.json())
+            .then(data => {
+                setCurrentUser(data.user)
+                setCartItems(data.user.cart_items)
             })
-            .then(r => addToCart(r.data))
         }
-        setIsBag(true)
     }
 
     return (
-        <div className="single-product">
-            <NavLink to="/products" exact><div className="go-back"><i class='bx bx-left-arrow-alt'></i></div></NavLink>
+        <div className="single-product container">
+            <NavLink to="/products" exact="true"><div className="go-back"><i className='bx bx-left-arrow-alt'></i></div></NavLink>
             <div className="product-imgs-container">
                 <motion.img 
                 className="copies-title" initial={{ y: 15, opacity: 0}} whileInView={{ y: 0, opacity: 1, transition:{duration: 1.1} }}
@@ -90,8 +108,11 @@ function SingleProduct({inCartProducts, updateCart, addToCart, setIsBag}) {
 
                     <hr></hr>
 
+                    {currentUser ? <button className="add-to-cart-btn" onClick={handleAddToBag} >ADD TO BAG</button> 
+                    :
+                    <button className="add-to-cart-btn" onClick={() => setIsLogin(true)} >ADD TO BAG</button> 
+                    }
                     
-                    <button className="add-to-cart-btn" onClick={sendToCart}>ADD TO BAG</button> 
                     
 
                 </div>

@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import AllProducts from "./AllProducts";
-import SingleProduct from "./SingleProduct";
 
 function Products({furnitures, selectedCat, setSelectedCat, setFurnitures, isCancel, setIsCancel}) {
 
